@@ -159,22 +159,21 @@
 </div>
 
 <!-- FIREBASE SCRIPT -->
-<!-- FIREBASE SCRIPT -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
     import { getAuth, onAuthStateChanged, signInAnonymously, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // กำหนดค่า Firebase (รวมไว้ชุดเดียว)
+    // กำหนดค่า Firebase ของโปรเจกต์ MSU-SPACE ที่ถูกต้อง
     const firebaseConfig = {
-        apiKey: "AIzaSyBN1Ndn8gBQYobfgL3lo0cqI_XLpWnPYVUUU",
-        authDomain: "msu-fitspace.firebaseapp.com",
-        projectId: "msu-fitspace",
-        storageBucket: "msu-fitspace.firebasestorage.app",
-        messagingSenderId: "488027390888",
-        appId: "1:488027390888:web:38d19d5d570c8ad3ec7539d",
-        measurementId: "G-XJHBY6SN4J"
+        apiKey: "AIzaSyA6WXqF_6F_cOLyHCa-TVbB2j39jWfPUUE",
+        authDomain: "msu-space.firebaseapp.com",
+        projectId: "msu-space",
+        storageBucket: "msu-space.firebasestorage.app",
+        messagingSenderId: "832709857049",
+        appId: "1:832709857049:web:18bac763a10a24c39a3f88",
+        measurementId: "G-89QTLVKYQ5"
     };
 
     // เริ่มต้นระบบ Firebase
@@ -211,7 +210,6 @@
             } else {
                 switchView('register');
             }
-            // ปิดหน้าโหลดเมื่อเช็คสถานะเสร็จ
             setTimeout(() => {
                 const loadingView = document.getElementById('view-loading');
                 if (loadingView) loadingView.classList.remove('active');
@@ -247,11 +245,16 @@
             const userCredential = await signInAnonymously(auth);
             const user = userCredential.user;
 
-            await setDoc(doc(db, 'users', user.uid), {
+            const userData = {
                 name, gender, bio, avatar, createdAt: new Date().toISOString()
-            });
+            };
 
+            await setDoc(doc(db, 'users', user.uid), userData);
             await updateProfile(user, { displayName: name });
+
+            currentUser = { uid: user.uid, ...userData };
+            updateAppHeader();
+            switchView('app');
         } catch (error) {
             console.error("Registration error:", error);
             alert("เกิดข้อผิดพลาดในการลงทะเบียน โปรดลองอีกครั้ง");
@@ -267,7 +270,6 @@
         alert("เช็คอินสำเร็จเรียบร้อย!");
     });
 
-    // เรียกใช้ฟังก์ชันตอนโหลดหน้าเว็บ
     initAuth();
 </script>
 </body>
