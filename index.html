@@ -263,20 +263,16 @@
         import { 
             getFirestore, doc, setDoc, getDoc, collection, addDoc, 
             query, orderBy, onSnapshot, serverTimestamp, updateDoc
-        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        // ==========================================
-        // ⚙ Firebase Config ของคุณไพ่
-        // ==========================================
-        const firebaseConfig = {
-            apiKey: "AIzaSyA6WXqF_6F_c0LyHCa-TVbB2j39jWfPUUE",
-            authDomain: "msu-space.firebaseapp.com",
-            projectId: "msu-space",
-            storageBucket: "msu-space.appspot.com",
-            messagingSenderId: "832709857049",
-            appId: "1:832709857049:web:18bac763a10a24c39a3f88",
-            measurementId: "G-89QTLVKYQ5"
-        };
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyA6WXqF_6F_cOLyHCa-TVbB2j39jWfPUUE",
+  authDomain: "msu-space.firebaseapp.com",
+  projectId: "msu-space",
+  storageBucket: "msu-space.firebasestorage.app",
+  messagingSenderId: "832709857049",
+  appId: "1:832709857049:web:18bac763a10a24c39a3f88",
+  measurementId: "G-89QTLVKYQ5"
+};
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
