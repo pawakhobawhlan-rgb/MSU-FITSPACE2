@@ -3,274 +3,508 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MSU FITSPACE - เพื่อนออกกำลังกาย มหาวิทยาลัยมหาสารคาม</title>
-    <!-- Tailwind CSS -->
+    <title>MSU FITSPACE - คอมมูนิตี้คนรักสุขภาพ มมส.</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Kanit', 'sans-serif'],
-                    },
                     colors: {
-                        primary: '#FF5722',
-                        secondary: '#2196F3',
-                        dark: '#333333',
-                        light: '#F5F5F5',
+                        msuYellow: '#FACC15',
+                        msuDark: '#1F2937',
                     }
                 }
             }
         }
     </script>
+    <!-- Google Font (Prompt) -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #F3F4F6; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; margin: 0; }
-        .container { max-width: 480px; width: 100%; margin: 0 auto; background-color: #FFFFFF; height: 100vh; display: flex; flex-direction: column; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
-        .scrollable-content { flex: 1; overflow-y: auto; scrollbar-width: none; }
-        .scrollable-content::-webkit-scrollbar { display: none; }
-        .view { display: none; height: 100%; flex-direction: column; }
-        .view.active { display: flex; }
-        .avatar-option.selected { border-color: #FF5722; box-shadow: 0 0 0 2px #FF5722; }
-        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #FF5722; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 20px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        body { font-family: 'Prompt', sans-serif; }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
 
-<div class="container">
-    
-    <!-- LOADING VIEW -->
-    <div id="view-loading" class="view active items-center justify-center bg-white z-50 absolute inset-0">
-        <div class="text-center">
-            <div class="loader"></div>
-            <p class="text-dark font-medium mt-4">กำลังโหลด MSU FITSPACE...</p>
-        </div>
-    </div>
-
-    <!-- REGISTER FORM VIEW -->
-    <div id="view-register" class="view scrollable-content p-8">
-        <div class="text-center mb-8">
-            <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="fa-solid fa-person-running text-white text-4xl"></i>
+    <!-- Navbar -->
+    <header class="bg-msuDark text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="bg-msuYellow text-msuDark font-bold px-2.5 py-1 rounded-lg text-lg">MSU</span>
+                <span class="text-xl font-bold tracking-wide">FITSPACE</span>
             </div>
-            <h1 class="text-3xl font-bold text-dark mb-2">MSU FITSPACE</h1>
-            <p class="text-gray-500">ลงทะเบียนเพื่อใช้บริการสุขภาพ มหาวิทยาลัยมหาสารคาม</p>
+            <div id="nav-auth-section" class="flex items-center space-x-3">
+                <!-- Dynamic Auth Button -->
+            </div>
         </div>
+    </header>
 
-        <form id="register-form" class="space-y-5">
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- VIEW 1: AUTHENTICATION (Login / Register) -->
+        <section id="view-auth" class="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-8 mt-10">
             <div class="text-center mb-6">
-                <p class="text-sm font-medium text-dark mb-4">เลือกรูปโปรไฟล์ (Avatar)</p>
-                <div class="flex justify-center gap-4">
-                    <label class="avatar-option selected w-16 h-16 rounded-full border-4 border-transparent flex items-center justify-center cursor-pointer bg-light transition-all">
-                        <input type="radio" name="avatar" value="avatar1.svg" class="hidden" checked>
-                        <i class="fa-solid fa-user-ninja text-2xl text-dark"></i>
-                    </label>
-                    <label class="avatar-option w-16 h-16 rounded-full border-4 border-transparent flex items-center justify-center cursor-pointer bg-light transition-all">
-                        <input type="radio" name="avatar" value="avatar2.svg" class="hidden">
-                        <i class="fa-solid fa-user-astronaut text-2xl text-dark"></i>
-                    </label>
-                    <label class="avatar-option w-16 h-16 rounded-full border-4 border-transparent flex items-center justify-center cursor-pointer bg-light transition-all">
-                        <input type="radio" name="avatar" value="avatar3.svg" class="hidden">
-                        <i class="fa-solid fa-user-secret text-2xl text-dark"></i>
-                    </label>
+                <h2 id="auth-title" class="text-2xl font-bold text-gray-900">เข้าสู่ระบบ MSU FITSPACE</h2>
+                <p class="text-sm text-gray-500 mt-1">หาเพื่อนออกกำลังกายใน มมส. แบบปลอดภัยและรู้จริง</p>
+            </div>
+
+            <form id="auth-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">อีเมล (มหาวิทยาลัยหรือส่วนตัว)</label>
+                    <input type="email" id="auth-email" required class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-msuYellow focus:outline-none" placeholder="name@example.com">
                 </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">รหัสผ่าน</label>
+                    <input type="password" id="auth-password" required class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-msuYellow focus:outline-none" placeholder="อย่างน้อย 6 ตัวอักษร">
+                </div>
+                <button type="submit" id="auth-submit-btn" class="w-full bg-msuYellow text-msuDark font-semibold py-2.5 rounded-xl hover:bg-yellow-400 transition shadow">
+                    เข้าสู่ระบบ
+                </button>
+            </form>
+
+            <div class="text-center mt-4">
+                <button id="auth-toggle-btn" class="text-sm text-blue-600 hover:underline">
+                    ยังไม่มีบัญชี? สมัครสมาชิกใหม่
+                </button>
+            </div>
+        </section>
+
+        <!-- VIEW 2: PROFILE SETUP (First time after register) -->
+        <section id="view-profile-setup" class="hidden max-w-md mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-8 mt-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2 text-center">ตั้งค่าโปรไฟล์ของคุณ</h2>
+            <p class="text-sm text-gray-500 mb-6 text-center">แนะนำตัวให้เพื่อนๆ ใน มมส. รู้จักกันเถอะ</p>
+            
+            <form id="profile-form" class="space-y-4">
+                <div class="flex flex-col items-center mb-4">
+                    <div class="w-24 h-24 rounded-full bg-gray-200 overflow-hidden mb-2 border-2 border-msuYellow flex items-center justify-center">
+                        <img id="profile-preview" src="" alt="Preview" class="w-full h-full object-cover hidden">
+                        <span id="profile-placeholder" class="text-gray-400 text-xs">รูปโปรไฟล์</span>
+                    </div>
+                    <input type="file" id="profile-image-input" accept="image/*" class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">ชื่อ - นามสกุล / ชื่อเล่น</label>
+                    <input type="text" id="setup-name" required class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-msuYellow focus:outline-none" placeholder="เช่น ไผ่ รัฐประศาสนศาสตร์">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">อายุ</label>
+                    <input type="number" id="setup-age" required class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-msuYellow focus:outline-none" placeholder="เช่น 19">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">กีฬาที่ชื่นชอบ</label>
+                    <select id="setup-sport" class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-msuYellow focus:outline-none">
+                        <option value="ฟิตเนส / เวทเทรนนิ่ง">ฟิตเนส / เวทเทรนนิ่ง</option>
+                        <option value="วิ่ง / คาร์ดิโอ">วิ่ง / คาร์ดิโอ</option>
+                        <option value="แบดมินตัน">แบดมินตัน</option>
+                        <option value="ฟุตบอล / บอลกระชับมิตร">ฟุตบอล / บอลกระชับมิตร</option>
+                        <option value="บาสเกตบอล">บาสเกตบอล</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">แนะนำตัวสั้นๆ (Bio)</label>
+                    <textarea id="setup-bio" rows="2" class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-msuYellow focus:outline-none" placeholder="เช่น วิ่งช่วงเย็นที่สนามลู่ฟ้าครับ"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-msuYellow text-msuDark font-semibold py-2.5 rounded-xl hover:bg-yellow-400 transition shadow">
+                    บันทึกโปรไฟล์และเริ่มใช้งาน
+                </button>
+            </form>
+        </section>
+
+        <!-- VIEW 3: MAIN APP (Feed & Dashboard) -->
+        <section id="view-main" class="hidden space-y-6">
+            
+            <!-- User Info Bar -->
+            <div class="bg-white rounded-2xl shadow p-4 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <img id="user-avatar" src="" alt="Avatar" class="w-12 h-12 rounded-full object-cover border border-msuYellow">
+                    <div>
+                        <h3 id="user-display-name" class="font-bold text-gray-900">ชื่อผู้ใช้</h3>
+                        <p id="user-display-sport" class="text-xs text-gray-500">กีฬาโปรด: -</p>
+                    </div>
+                </div>
+                <button id="logout-btn" class="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg text-gray-600 transition">ออกจากระบบ</button>
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">ชื่อของคุณ</label>
-                <input type="text" id="reg-name" required placeholder="กรอกชื่อเล่นหรือชื่อจริง" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+            <!-- Create Post Card -->
+            <div class="bg-white rounded-2xl shadow p-5">
+                <h3 class="font-bold text-gray-800 mb-3">📢 ชวนเพื่อนออกกำลังกายกัน</h3>
+                <form id="post-form" class="space-y-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">ประเภทกีฬา</label>
+                            <select id="post-sport" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-msuYellow">
+                                <option value="ฟิตเนส / เวทเทรนนิ่ง">ฟิตเนส / เวทเทรนนิ่ง</option>
+                                <option value="วิ่ง / คาร์ดิโอ">วิ่ง / คาร์ดิโอ</option>
+                                <option value="แบดมินตัน">แบดมินตัน</option>
+                                <option value="ฟุตบอล / บอลกระชับมิตร">ฟุตบอล / บอลกระชับมิตร</option>
+                                <option value="บาสเกตบอล">บาสเกตบอล</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">สถานที่ใน มมส.</label>
+                            <select id="post-location" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-msuYellow">
+                                <option value="สนามลู่ฟ้า มมส.">สนามลู่ฟ้า มมส.</option>
+                                <option value="สนามลู่แดง มมส.">สนามลู่แดง มมส.</option>
+                                <option value="ศูนย์กีฬากลาง มมส.">ศูนย์กีฬากลาง มมส.</option>
+                                <option value="ฟิตเนสโซนหอใน มมส.">ฟิตเนสโซนหอใน มมส.</option>
+                                <option value="สนามพฤกษศาสตร์ มมส.">สนามพฤกษศาสตร์ มมส.</option>
+                                <option value="อื่นๆ (ระบุในรายละเอียด)">อื่นๆ (ระบุในรายละเอียด)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">รายละเอียดและเวลานัดหมาย</label>
+                        <textarea id="post-content" rows="2" placeholder="เช่น เย็นนี้ 17.30 น. เจอกันสนามลู่ฟ้าวิ่งยาวๆ ครับ" required class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-msuYellow"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-msuYellow text-msuDark font-semibold py-2 rounded-xl text-sm hover:bg-yellow-400 transition shadow">
+                        โพสต์ชวนเพื่อน
+                    </button>
+                </form>
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">เพศของคุณ</label>
-                <select id="reg-gender" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
-                    <option value="male">ชาย</option>
-                    <option value="female">หญิง</option>
-                    <option value="other">อื่นๆ</option>
+            <!-- Filter Bar -->
+            <div class="flex items-center justify-between">
+                <h3 class="font-bold text-gray-800 text-lg">ฟีดประกาศหาเพื่อน</h3>
+                <select id="filter-sport" class="px-3 py-1.5 border rounded-xl text-sm bg-white">
+                    <option value="all">กีฬาทั้งหมด</option>
+                    <option value="ฟิตเนส / เวทเทรนนิ่ง">ฟิตเนส / เวทเทรนนิ่ง</option>
+                    <option value="วิ่ง / คาร์ดิโอ">วิ่ง / คาร์ดิโอ</option>
+                    <option value="แบดมินตัน">แบดมินตัน</option>
+                    <option value="ฟุตบอล / บอลกระชับมิตร">ฟุตบอล / บอลกระชับมิตร</option>
+                    <option value="บาสเกตบอล">บาสเกตบอล</option>
                 </select>
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">คำแนะนำตัวสั้นๆ (Bio)</label>
-                <input type="text" id="reg-bio" required placeholder="เช่น ชอบวิ่งเย็น เพื่อสุขภาพที่ดี" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+            <!-- Feed List Container -->
+            <div id="posts-container" class="space-y-4">
+                <!-- Posts will be injected here -->
             </div>
+        </section>
 
-            <button type="submit" class="w-full bg-primary text-white font-semibold py-4 rounded-xl hover:bg-orange-600 transition-all shadow-lg shadow-primary/20 mt-4">
-                เข้าสู่ระบบ
-            </button>
-        </form>
-    </div>
-
-    <!-- MAIN APP VIEW -->
-    <div id="view-app" class="view bg-light">
-        <header class="bg-white px-6 py-4 flex items-center justify-between border-b border-gray-100 sticky top-0 z-40">
-            <div class="flex items-center gap-3">
-                <div id="header-avatar" class="w-10 h-10 rounded-full flex items-center justify-center bg-light"></div>
-                <div>
-                    <h2 id="header-name" class="font-bold text-dark text-lg leading-tight">...</h2>
-                    <span class="text-xs text-primary font-medium">เข้าสู่ระบบสำเร็จ</span>
+        <!-- VIEW 4: CHAT ROOM -->
+        <section id="view-chat" class="hidden bg-white rounded-2xl shadow flex flex-col h-[75vh]">
+            <div class="p-4 border-b flex items-center justify-between bg-msuDark text-white rounded-t-2xl">
+                <div class="flex items-center space-x-3">
+                    <button id="back-to-feed-btn" class="text-sm bg-gray-700 px-3 py-1 rounded-lg hover:bg-gray-600">← กลับ</button>
+                    <h3 id="chat-room-title" class="font-bold">ห้องแชทพูดคุย</h3>
                 </div>
             </div>
-            <button id="btn-logout" class="text-gray-400 hover:text-primary transition-all">
-                <i class="fa-solid fa-right-from-bracket text-xl"></i>
-            </button>
-        </header>
+            <div id="chat-messages" class="flex-grow p-4 overflow-y-auto space-y-3 bg-gray-50">
+                <!-- Messages injected here -->
+            </div>
+            <form id="chat-form" class="p-3 border-t bg-white rounded-b-2xl flex space-x-2">
+                <input type="text" id="chat-input" placeholder="พิมพ์ข้อความนัดแนะ..." required class="flex-grow px-4 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-msuYellow focus:outline-none">
+                <button type="submit" class="bg-msuYellow text-msuDark px-5 py-2 rounded-xl font-semibold text-sm hover:bg-yellow-400">ส่ง</button>
+            </form>
+        </section>
 
-        <div class="scrollable-content p-6 space-y-8">
-            <!-- MATCHING PROFILES -->
-            <section>
-                <h3 class="font-bold text-dark text-lg mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-heart-pulse text-primary"></i> ค้นหาคู่หูสุขภาพ
-                </h3>
-                <div id="profiles-container" class="grid grid-cols-2 gap-4">
-                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
-                        <div class="w-16 h-16 bg-light rounded-full flex items-center justify-center mb-3">
-                            <i class="fa-solid fa-user-ninja text-3xl text-dark"></i>
-                        </div>
-                        <h4 class="font-bold text-dark">สมชาย</h4>
-                        <p class="text-xs text-gray-500 mb-3 px-2 line-clamp-2">ชอบวิ่งฟิตเนสช่วงเย็น</p>
-                        <button class="w-full bg-secondary text-white font-medium py-2 rounded-lg hover:bg-blue-600 transition-all text-sm">
-                            ส่งคำขอคู่หู
-                        </button>
-                    </div>
-                </div>
-            </section>
+    </main>
 
-            <!-- GYM CHECK IN -->
-            <section class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                <h3 class="font-bold text-dark text-lg mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-dumbbell text-secondary"></i> เช็คอิน ศูนย์ออกกำลังกาย
-                </h3>
-                <div class="relative w-full rounded-2xl overflow-hidden mb-5">
-                    <img src="https://images.unsplash.com/photo-1517838531652-f1797e559092?w=800&q=80" alt="Gym" class="w-full h-32 object-cover">
-                    <div class="absolute top-0 right-0 bg-primary text-white font-bold px-3 py-1 m-3 rounded-full text-sm shadow-lg">
-                        คิวปัจจุบัน: 5 คน
-                    </div>
-                </div>
-                <button id="btn-checkin" class="w-full bg-primary text-white font-semibold py-4 rounded-xl hover:bg-orange-600 transition-all shadow-lg shadow-primary/20">
-                    เช็คอินเข้าใช้งานศูนย์
-                </button>
-            </section>
-        </div>
-    </div>
+    <!-- Firebase SDKs (Modular v10) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
+            signOut, onAuthStateChanged, sendEmailVerification 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { 
+            getFirestore, doc, setDoc, getDoc, collection, addDoc, 
+            query, orderBy, onSnapshot, serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-</div>
+        // ==========================================
+        // ⚙️ แทนที่ค่า Firebase Config ของคุณตรงนี้
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
-<!-- FIREBASE SCRIPT -->
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
-    import { getAuth, onAuthStateChanged, signInAnonymously, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-    // กำหนดค่า Firebase ของโปรเจกต์ MSU-SPACE ที่ถูกต้อง
-    const firebaseConfig = {
-        apiKey: "AIzaSyA6WXqF_6F_cOLyHCa-TVbB2j39jWfPUUE",
-        authDomain: "msu-space.firebaseapp.com",
-        projectId: "msu-space",
-        storageBucket: "msu-space.firebasestorage.app",
-        messagingSenderId: "832709857049",
-        appId: "1:832709857049:web:18bac763a10a24c39a3f88",
-        measurementId: "G-89QTLVKYQ5"
-    };
+        // UI Elements
+        const viewAuth = document.getElementById('view-auth');
+        const viewProfileSetup = document.getElementById('view-profile-setup');
+        const viewMain = document.getElementById('view-main');
+        const viewChat = document.getElementById('view-chat');
 
-    // เริ่มต้นระบบ Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+        const authForm = document.getElementById('auth-form');
+        const authTitle = document.getElementById('auth-title');
+        const authSubmitBtn = document.getElementById('auth-submit-btn');
+        const authToggleBtn = document.getElementById('auth-toggle-btn');
+        
+        let isRegisterMode = false;
+        let currentUserData = null;
+        let currentActiveChatId = null;
+        let base64ImageString = "";
 
-    let currentUser = null;
+        // Toggle Login / Register
+        authToggleBtn.addEventListener('click', () => {
+            isRegisterMode = !isRegisterMode;
+            authTitle.innerText = isRegisterMode ? "สมัครสมาชิก MSU FITSPACE" : "เข้าสู่ระบบ MSU FITSPACE";
+            authSubmitBtn.innerText = isRegisterMode ? "สมัครสมาชิก" : "เข้าสู่ระบบ";
+            authToggleBtn.innerText = isRegisterMode ? "มีบัญชีอยู่แล้ว? เข้าสู่ระบบ" : "ยังไม่มีบัญชี? สมัครสมาชิกใหม่";
+        });
 
-    function switchView(viewId) {
-        document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
-        document.getElementById(`view-${viewId}`).classList.add('active');
-    }
+        // Handle Auth Submit
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
 
-    function initAuth() {
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                try {
-                    const userDocRef = doc(db, 'users', user.uid);
-                    const userDoc = await getDoc(userDocRef);
-
-                    if (userDoc.exists()) {
-                        currentUser = { uid: user.uid, ...userDoc.data() };
-                        updateAppHeader();
-                        switchView('app');
-                    } else {
-                        switchView('register');
-                    }
-                } catch (err) {
-                    console.error("Error fetching user data:", err);
-                    switchView('register');
+            try {
+                if (isRegisterMode) {
+                    const userCred = await createUserWithEmailAndPassword(auth, email, password);
+                    await sendEmailVerification(userCred.user);
+                    alert("สมัครสมาชิกสำเร็จ! ระบบได้ส่งลิงก์ยืนยันไปที่อีเมลของคุณแล้ว กรุณากรอกโปรไฟล์ต่อได้เลยครับ");
+                    viewAuth.classList.add('hidden');
+                    viewProfileSetup.classList.remove('hidden');
+                } else {
+                    await signInWithEmailAndPassword(auth, email, password);
                 }
-            } else {
-                switchView('register');
+            } catch (error) {
+                alert("เกิดข้อผิดพลาด: " + error.message);
             }
-            setTimeout(() => {
-                const loadingView = document.getElementById('view-loading');
-                if (loadingView) loadingView.classList.remove('active');
-            }, 400);
         });
-    }
 
-    function updateAppHeader() {
-        if (!currentUser) return;
-        document.getElementById('header-name').textContent = currentUser.name;
-        let iconClass = 'fa-solid fa-user-ninja';
-        if (currentUser.avatar === 'avatar2.svg') iconClass = 'fa-solid fa-user-astronaut';
-        if (currentUser.avatar === 'avatar3.svg') iconClass = 'fa-solid fa-user-secret';
-        document.getElementById('header-avatar').innerHTML = `<i class="${iconClass} text-xl text-dark"></i>`;
-    }
+        // Handle Profile Image Conversion to Base64
+        const profileImageInput = document.getElementById('profile-image-input');
+        const profilePreview = document.getElementById('profile-preview');
+        const profilePlaceholder = document.getElementById('profile-placeholder');
 
-    document.querySelectorAll('input[name="avatar"]').forEach(radio => {
-        radio.addEventListener('change', (e) => {
-            document.querySelectorAll('.avatar-option').forEach(l => l.classList.remove('selected'));
-            e.target.parentElement.classList.add('selected');
+        profileImageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) {
+                    base64ImageString = uploadEvent.target.result;
+                    profilePreview.src = base64ImageString;
+                    profilePreview.classList.remove('hidden');
+                    profilePlaceholder.classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
         });
-    });
 
-    document.getElementById('register-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const name = document.getElementById('reg-name').value;
-        const gender = document.getElementById('reg-gender').value;
-        const bio = document.getElementById('reg-bio').value;
-        const avatarRadio = document.querySelector('input[name="avatar"]:checked');
-        const avatar = avatarRadio ? avatarRadio.value : 'avatar1.svg';
+        // Handle Profile Setup Submit
+        const profileForm = document.getElementById('profile-form');
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!auth.currentUser) return;
 
-        try {
-            const userCredential = await signInAnonymously(auth);
-            const user = userCredential.user;
+            const name = document.getElementById('setup-name').value;
+            const age = document.getElementById('setup-age').value;
+            const sport = document.getElementById('setup-sport').value;
+            const bio = document.getElementById('setup-bio').value;
 
             const userData = {
-                name, gender, bio, avatar, createdAt: new Date().toISOString()
+                uid: auth.currentUser.uid,
+                email: auth.currentUser.email,
+                name,
+                age,
+                sport,
+                bio,
+                avatar: base64ImageString || "https://via.placeholder.com/150",
+                createdAt: serverTimestamp()
             };
 
-            await setDoc(doc(db, 'users', user.uid), userData);
-            await updateProfile(user, { displayName: name });
+            try {
+                await setDoc(doc(db, "users", auth.currentUser.uid), userData);
+                currentUserData = userData;
+                viewProfileSetup.classList.add('hidden');
+                viewMain.classList.remove('hidden');
+                loadUserDataAndFeed();
+            } catch (error) {
+                alert("บันทึกโปรไฟล์ไม่สำเร็จ: " + error.message);
+            }
+        });
 
-            currentUser = { uid: user.uid, ...userData };
-            updateAppHeader();
-            switchView('app');
-        } catch (error) {
-            console.error("Registration error:", error);
-            alert("เกิดข้อผิดพลาดในการลงทะเบียน โปรดลองอีกครั้ง");
+        // Auth State Observer
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDocRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userDocRef);
+
+                if (userDoc.exists()) {
+                    currentUserData = userDoc.data();
+                    viewAuth.classList.add('hidden');
+                    viewProfileSetup.classList.add('hidden');
+                    viewMain.classList.remove('hidden');
+                    loadUserDataAndFeed();
+                } else {
+                    viewAuth.classList.add('hidden');
+                    viewProfileSetup.classList.remove('hidden');
+                }
+            } else {
+                viewAuth.classList.remove('hidden');
+                viewProfileSetup.classList.add('hidden');
+                viewMain.classList.add('hidden');
+                viewChat.classList.add('hidden');
+            }
+        });
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            signOut(auth);
+        });
+
+        // Load Main Feed & User Bar
+        function loadUserDataAndFeed() {
+            if (!currentUserData) return;
+            document.getElementById('user-avatar').src = currentUserData.avatar;
+            document.getElementById('user-display-name').innerText = currentUserData.name;
+            document.getElementById('user-display-sport').innerText = `กีฬาโปรด: ${currentUserData.sport}`;
+            loadPosts();
         }
-    });
 
-    document.getElementById('btn-logout').addEventListener('click', async () => {
-        await signOut(auth);
-        switchView('register');
-    });
+        // Create Post
+        const postForm = document.getElementById('post-form');
+        postForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const sport = document.getElementById('post-sport').value;
+            const location = document.getElementById('post-location').value;
+            const content = document.getElementById('post-content').value;
 
-    document.getElementById('btn-checkin').addEventListener('click', () => {
-        alert("เช็คอินสำเร็จเรียบร้อย!");
-    });
+            try {
+                await addDoc(collection(db, "posts"), {
+                    uid: currentUserData.uid,
+                    authorName: currentUserData.name,
+                    authorAvatar: currentUserData.avatar,
+                    sport,
+                    location,
+                    content,
+                    createdAt: serverTimestamp()
+                });
+                postForm.reset();
+                alert("โพสต์ชวนเพื่อนสำเร็จ!");
+            } catch (error) {
+                alert("โพสต์ไม่สำเร็จ: " + error.message);
+            }
+        });
 
-    initAuth();
-</script>
+        // Load Posts Feed with Filter
+        const filterSport = document.getElementById('filter-sport');
+        filterSport.addEventListener('change', loadPosts);
+
+        function loadPosts() {
+            const postsContainer = document.getElementById('posts-container');
+            const selectedFilter = filterSport.value;
+
+            const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+            onSnapshot(q, (snapshot) => {
+                postsContainer.innerHTML = "";
+                if (snapshot.empty) {
+                    postsContainer.innerHTML = `<p class="text-center text-gray-400 py-6 bg-white rounded-2xl shadow">ยังไม่มีโพสต์ชวนออกกำลังกาย มาสร้างโพสต์แรกกันเลย!</p>`;
+                    return;
+                }
+
+                snapshot.forEach((docSnap) => {
+                    const post = docSnap.data();
+                    const postId = docSnap.id;
+
+                    if (selectedFilter !== "all" && post.sport !== selectedFilter) {
+                        return;
+                    }
+
+                    const card = document.createElement('div');
+                    card.className = "bg-white rounded-2xl shadow p-4 border border-gray-100 space-y-3";
+                    card.innerHTML = `
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <img src="${post.authorAvatar || 'https://via.placeholder.com/150'}" class="w-10 h-10 rounded-full object-cover border">
+                                <div>
+                                    <h4 class="font-bold text-gray-900 text-sm">${post.authorName}</h4>
+                                    <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-medium">${post.sport}</span>
+                                </div>
+                            </div>
+                            <span class="text-xs font-semibold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-lg">📍 ${post.location}</span>
+                        </div>
+                        <p class="text-gray-700 text-sm mt-2">${post.content}</p>
+                        <div class="flex justify-end pt-2 border-t">
+                            <button onclick="openChatRoom('${postId}', '${post.authorName}')" class="bg-gray-900 text-white text-xs px-4 py-2 rounded-xl hover:bg-gray-800 transition shadow">
+                                พูดคุย / นัดหมาย
+                            </button>
+                        </div>
+                    `;
+                    postsContainer.appendChild(card);
+                });
+            });
+        }
+
+        // Global function to open chat room
+        window.openChatRoom = async function(postId, postAuthorName) {
+            currentActiveChatId = postId;
+            viewMain.classList.add('hidden');
+            viewChat.classList.remove('hidden');
+            document.getElementById('chat-room-title').innerText = `ห้องแชท: ${postAuthorName}`;
+            loadMessages(postId);
+        };
+
+        document.getElementById('back-to-feed-btn').addEventListener('click', () => {
+            viewChat.classList.add('hidden');
+            viewMain.classList.remove('hidden');
+            currentActiveChatId = null;
+        });
+
+        // Chat Message Sending
+        const chatForm = document.getElementById('chat-form');
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const textInput = document.getElementById('chat-input');
+            const text = textInput.value.trim();
+            if (!text || !currentActiveChatId) return;
+
+            try {
+                await addDoc(collection(db, "posts", currentActiveChatId, "messages"), {
+                    senderId: currentUserData.uid,
+                    senderName: currentUserData.name,
+                    text,
+                    createdAt: serverTimestamp()
+                });
+                textInput.value = "";
+            } catch (error) {
+                alert("ส่งข้อความไม่สำเร็จ: " + error.message);
+            }
+        });
+
+        // Load Real-time Messages
+        function loadMessages(postId) {
+            const chatMessagesContainer = document.getElementById('chat-messages');
+            const q = query(collection(db, "posts", postId, "messages"), orderBy("createdAt", "asc"));
+
+            onSnapshot(q, (snapshot) => {
+                chatMessagesContainer.innerHTML = "";
+                if (snapshot.empty) {
+                    chatMessagesContainer.innerHTML = `<p class="text-center text-gray-400 py-4 text-sm">ยังไม่มีข้อความ เริ่มทักทายพูดคุยกันได้เลย</p>`;
+                    return;
+                }
+
+                snapshot.forEach((docSnap) => {
+                    const msg = docSnap.data();
+                    const isMe = msg.senderId === currentUserData.uid;
+
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = `flex flex-col ${isMe ? 'items-end' : 'items-start'}`;
+                    msgDiv.innerHTML = `
+                        <span class="text-[10px] text-gray-400 mb-1">${msg.senderName}</span>
+                        <div class="max-w-[75%] px-4 py-2 rounded-2xl text-sm ${isMe ? 'bg-msuYellow text-msuDark rounded-br-none' : 'bg-gray-200 text-gray-800 rounded-bl-none'}">
+                            ${msg.text}
+                        </div>
+                    `;
+                    chatMessagesContainer.appendChild(msgDiv);
+                });
+                chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+            });
+        }
+    </script>
 </body>
 </html>
+
