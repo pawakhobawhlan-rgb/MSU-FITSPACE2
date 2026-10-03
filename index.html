@@ -24,10 +24,10 @@
         body { font-family: 'Prompt', sans-serif; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col relative">
 
     <!-- Navbar -->
-    <header class="bg-msuDark text-white shadow-md sticky top-0 z-50">
+    <header class="bg-msuDark text-white shadow-md sticky top-0 z-40">
         <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-2">
                 <span class="bg-msuYellow text-msuDark font-bold px-2.5 py-1 rounded-lg text-lg">MSU</span>
@@ -40,9 +40,9 @@
     </header>
 
     <!-- Main Container -->
-    <main class="max-w-4xl mx-auto px-4 py-6 flex-grow w-full">
+    <main class="max-w-4xl mx-auto px-4 py-6 flex-grow w-full relative z-10">
 
-        <!-- VIEW 1: AUTHENTICATION (Login / Register) -->
+        <!-- VIEW 1: AUTHENTICATION -->
         <section id="view-auth" class="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-8 mt-10">
             <div class="text-center mb-6">
                 <h2 id="auth-title" class="text-2xl font-bold text-gray-900">เข้าสู่ระบบ MSU FITSPACE</h2>
@@ -51,12 +51,17 @@
 
             <form id="auth-form" class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">อีเมล (มหาวิทยาลัยหรือส่วนตัว)</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">อีเมล</label>
                     <input type="email" id="auth-email" required class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-msuYellow focus:outline-none" placeholder="name@example.com">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">รหัสผ่าน</label>
-                    <input type="password" id="auth-password" required class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-msuYellow focus:outline-none" placeholder="อย่างน้อย 6 ตัวอักษร">
+                    <div class="relative">
+                        <input type="password" id="auth-password" required class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-msuYellow focus:outline-none pr-12" placeholder="อย่างน้อย 6 ตัวอักษร">
+                        <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500 hover:text-gray-800 font-medium">
+                            👁️ ดู
+                        </button>
+                    </div>
                 </div>
                 <button type="submit" id="auth-submit-btn" class="w-full bg-msuYellow text-msuDark font-semibold py-2.5 rounded-xl hover:bg-yellow-400 transition shadow">
                     เข้าสู่ระบบ
@@ -70,16 +75,20 @@
             </div>
         </section>
 
-        <!-- VIEW 2: PROFILE SETUP (First time after register) -->
+        <!-- VIEW 2: PROFILE SETUP & EDIT -->
         <section id="view-profile-setup" class="hidden max-w-md mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-8 mt-6">
-            <h2 class="text-2xl font-bold text-gray-900 mb-2 text-center">ตั้งค่าโปรไฟล์ของคุณ</h2>
+            <h2 id="profile-setup-title" class="text-2xl font-bold text-gray-900 mb-2 text-center">ตั้งค่าโปรไฟล์ของคุณ</h2>
             <p class="text-sm text-gray-500 mb-6 text-center">แนะนำตัวให้เพื่อนๆ ใน มมส. รู้จักกันเถอะ</p>
             
             <form id="profile-form" class="space-y-4">
                 <div class="flex flex-col items-center mb-4">
-                    <div class="w-24 h-24 rounded-full bg-gray-200 overflow-hidden mb-2 border-2 border-msuYellow flex items-center justify-center">
+                    <div class="w-24 h-24 rounded-full bg-gray-100 overflow-hidden mb-2 border-2 border-msuYellow flex items-center justify-center relative shadow-inner">
                         <img id="profile-preview" src="" alt="Preview" class="w-full h-full object-cover hidden">
-                        <span id="profile-placeholder" class="text-gray-400 text-xs">รูปโปรไฟล์</span>
+                        <div id="profile-placeholder" class="flex flex-col items-center justify-center text-gray-400">
+                            <svg class="w-12 h-12 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                        </div>
                     </div>
                     <input type="file" id="profile-image-input" accept="image/*" class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100">
                 </div>
@@ -106,8 +115,12 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">แนะนำตัวสั้นๆ (Bio)</label>
                     <textarea id="setup-bio" rows="2" class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-msuYellow focus:outline-none" placeholder="เช่น วิ่งช่วงเย็นที่สนามลู่ฟ้าครับ"></textarea>
                 </div>
+                
                 <button type="submit" class="w-full bg-msuYellow text-msuDark font-semibold py-2.5 rounded-xl hover:bg-yellow-400 transition shadow">
-                    บันทึกโปรไฟล์และเริ่มใช้งาน
+                    บันทึกโปรไฟล์
+                </button>
+                <button type="button" id="cancel-profile-btn" class="hidden w-full text-gray-500 hover:text-gray-800 font-semibold py-2 rounded-xl transition">
+                    ยกเลิก
                 </button>
             </form>
         </section>
@@ -118,13 +131,22 @@
             <!-- User Info Bar -->
             <div class="bg-white rounded-2xl shadow p-4 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <img id="user-avatar" src="" alt="Avatar" class="w-12 h-12 rounded-full object-cover border border-msuYellow">
+                    <div class="w-12 h-12 rounded-full bg-gray-100 overflow-hidden border border-msuYellow flex items-center justify-center">
+                        <img id="user-avatar" src="" alt="Avatar" class="w-full h-full object-cover hidden">
+                        <svg id="user-avatar-fallback" class="w-8 h-8 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </div>
                     <div>
                         <h3 id="user-display-name" class="font-bold text-gray-900">ชื่อผู้ใช้</h3>
                         <p id="user-display-sport" class="text-xs text-gray-500">กีฬาโปรด: -</p>
                     </div>
                 </div>
-                <button id="logout-btn" class="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg text-gray-600 transition">ออกจากระบบ</button>
+                <!-- ปุ่มแก้ไขโปรไฟล์ และ ล็อกเอาต์ -->
+                <div class="flex space-x-2">
+                    <button id="edit-profile-btn" class="text-sm bg-yellow-100 hover:bg-yellow-200 px-3 py-1.5 rounded-lg text-yellow-800 transition font-medium shadow-sm">⚙️ แก้ไข</button>
+                    <button id="logout-btn" class="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg text-gray-600 transition shadow-sm">ออกจากระบบ</button>
+                </div>
             </div>
 
             <!-- Create Post Card -->
@@ -154,10 +176,17 @@
                             </select>
                         </div>
                     </div>
+                    
                     <div>
-                        <label class="block text-xs font-medium text-gray-600 mb-1">รายละเอียดและเวลานัดหมาย</label>
-                        <textarea id="post-content" rows="2" placeholder="เช่น เย็นนี้ 17.30 น. เจอกันสนามลู่ฟ้าวิ่งยาวๆ ครับ" required class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-msuYellow"></textarea>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">วันและเวลานัดหมาย <span class="text-red-500">(ซ่อนอัตโนมัติเมื่อเลยเวลา)</span></label>
+                        <input type="datetime-local" id="post-appointment-time" required class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-msuYellow">
                     </div>
+                    
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">รายละเอียดเพิ่มเติม</label>
+                        <textarea id="post-content" rows="2" placeholder="เช่น หาคนวิ่งด้วยครับ วิ่งเรื่อยๆ ไม่เน้นเร็ว" required class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-msuYellow"></textarea>
+                    </div>
+
                     <button type="submit" class="w-full bg-msuYellow text-msuDark font-semibold py-2 rounded-xl text-sm hover:bg-yellow-400 transition shadow">
                         โพสต์ชวนเพื่อน
                     </button>
@@ -167,7 +196,7 @@
             <!-- Filter Bar -->
             <div class="flex items-center justify-between">
                 <h3 class="font-bold text-gray-800 text-lg">ฟีดประกาศหาเพื่อน</h3>
-                <select id="filter-sport" class="px-3 py-1.5 border rounded-xl text-sm bg-white">
+                <select id="filter-sport" class="px-3 py-1.5 border rounded-xl text-sm bg-white shadow-sm">
                     <option value="all">กีฬาทั้งหมด</option>
                     <option value="ฟิตเนส / เวทเทรนนิ่ง">ฟิตเนส / เวทเทรนนิ่ง</option>
                     <option value="วิ่ง / คาร์ดิโอ">วิ่ง / คาร์ดิโอ</option>
@@ -183,24 +212,46 @@
             </div>
         </section>
 
-        <!-- VIEW 4: CHAT ROOM -->
+        <!-- VIEW 4: CHAT ROOM (Private DM) -->
         <section id="view-chat" class="hidden bg-white rounded-2xl shadow flex flex-col h-[75vh]">
             <div class="p-4 border-b flex items-center justify-between bg-msuDark text-white rounded-t-2xl">
                 <div class="flex items-center space-x-3">
-                    <button id="back-to-feed-btn" class="text-sm bg-gray-700 px-3 py-1 rounded-lg hover:bg-gray-600">← กลับ</button>
-                    <h3 id="chat-room-title" class="font-bold">ห้องแชทพูดคุย</h3>
+                    <button id="back-to-feed-btn" class="text-sm bg-gray-700 px-3 py-1 rounded-lg hover:bg-gray-600 shadow">← กลับไปหน้าฟีด</button>
+                    <h3 id="chat-room-title" class="font-bold">แชทส่วนตัว</h3>
                 </div>
             </div>
             <div id="chat-messages" class="flex-grow p-4 overflow-y-auto space-y-3 bg-gray-50">
                 <!-- Messages injected here -->
             </div>
-            <form id="chat-form" class="p-3 border-t bg-white rounded-b-2xl flex space-x-2">
-                <input type="text" id="chat-input" placeholder="พิมพ์ข้อความนัดแนะ..." required class="flex-grow px-4 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-msuYellow focus:outline-none">
-                <button type="submit" class="bg-msuYellow text-msuDark px-5 py-2 rounded-xl font-semibold text-sm hover:bg-yellow-400">ส่ง</button>
+            <form id="chat-form" class="p-3 border-t bg-white rounded-b-2xl flex space-x-2 shadow-inner">
+                <input type="text" id="chat-input" placeholder="พิมพ์ข้อความที่นี่..." required class="flex-grow px-4 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-msuYellow focus:outline-none bg-gray-50">
+                <button type="submit" class="bg-msuYellow text-msuDark px-5 py-2 rounded-xl font-bold text-sm hover:bg-yellow-400 transition shadow">ส่ง</button>
             </form>
         </section>
 
     </main>
+
+    <!-- Modal: ส่องโปรไฟล์คนอื่น (View User Profile) -->
+    <div id="profile-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm relative shadow-2xl transform scale-100">
+            <button id="close-profile-modal" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full w-8 h-8 flex items-center justify-center font-bold transition">✕</button>
+            <div class="flex flex-col items-center mt-2">
+                <div class="w-24 h-24 rounded-full bg-gray-100 overflow-hidden border-4 border-msuYellow mb-3 shadow-md flex items-center justify-center">
+                    <img id="modal-avatar" src="" class="w-full h-full object-cover hidden">
+                    <svg id="modal-avatar-fallback" class="w-12 h-12 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                </div>
+                <h3 id="modal-name" class="text-xl font-bold text-gray-900 mb-1">ชื่อผู้ใช้</h3>
+                <p id="modal-age" class="text-sm text-gray-500 mb-3">อายุ: - ปี</p>
+                <span id="modal-sport" class="text-xs bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full font-semibold mb-4 shadow-sm">กีฬาโปรด</span>
+                <div class="w-full bg-gray-50 rounded-2xl p-4 text-sm text-gray-700 text-center border border-gray-100 shadow-inner">
+                    <span class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">✍️ แนะนำตัว</span>
+                    <span id="modal-bio" class="italic">...</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Firebase SDKs (Modular v10) -->
     <script type="module">
@@ -211,22 +262,21 @@
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { 
             getFirestore, doc, setDoc, getDoc, collection, addDoc, 
-            query, orderBy, onSnapshot, serverTimestamp 
+            query, orderBy, onSnapshot, serverTimestamp, updateDoc
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // ==========================================
-        // ⚙️ แทนที่ค่า Firebase Config ของคุณตรงนี้
+        // ⚙ Firebase Config ของคุณไพ่
         // ==========================================
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyA6WXqF_6F_cOLyHCa-TVbB2j39jWfPUUE",
-  authDomain: "msu-space.firebaseapp.com",
-  projectId: "msu-space",
-  storageBucket: "msu-space.firebasestorage.app",
-  messagingSenderId: "832709857049",
-  appId: "1:832709857049:web:18bac763a10a24c39a3f88",
-  measurementId: "G-89QTLVKYQ5"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6WXqF_6F_c0LyHCa-TVbB2j39jWfPUUE",
+            authDomain: "msu-space.firebaseapp.com",
+            projectId: "msu-space",
+            storageBucket: "msu-space.appspot.com",
+            messagingSenderId: "832709857049",
+            appId: "1:832709857049:web:18bac763a10a24c39a3f88",
+            measurementId: "G-89QTLVKYQ5"
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -245,8 +295,17 @@ const firebaseConfig = {
         
         let isRegisterMode = false;
         let currentUserData = null;
-        let currentActiveChatId = null;
+        let currentActiveChatId = null; 
         let base64ImageString = "";
+
+        // Toggle Password Visibility
+        const togglePasswordBtn = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('auth-password');
+        togglePasswordBtn.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePasswordBtn.innerText = type === 'password' ? '👁️ ดู' : '🙈 ซ่อน';
+        });
 
         // Toggle Login / Register
         authToggleBtn.addEventListener('click', () => {
@@ -266,9 +325,8 @@ const firebaseConfig = {
                 if (isRegisterMode) {
                     const userCred = await createUserWithEmailAndPassword(auth, email, password);
                     await sendEmailVerification(userCred.user);
-                    alert("สมัครสมาชิกสำเร็จ! ระบบได้ส่งลิงก์ยืนยันไปที่อีเมลของคุณแล้ว กรุณากรอกโปรไฟล์ต่อได้เลยครับ");
-                    viewAuth.classList.add('hidden');
-                    viewProfileSetup.classList.remove('hidden');
+                    alert("สมัครสมาชิกสำเร็จ! กรุณากรอกโปรไฟล์ต่อได้เลยครับ");
+                    openProfileForm(); // เปิดฟอร์มสร้างโปรไฟล์
                 } else {
                     await signInWithEmailAndPassword(auth, email, password);
                 }
@@ -277,7 +335,7 @@ const firebaseConfig = {
             }
         });
 
-        // Handle Profile Image Conversion to Base64
+        // Handle Profile Image Conversion
         const profileImageInput = document.getElementById('profile-image-input');
         const profilePreview = document.getElementById('profile-preview');
         const profilePlaceholder = document.getElementById('profile-placeholder');
@@ -296,9 +354,51 @@ const firebaseConfig = {
             }
         });
 
-        // Handle Profile Setup Submit
-        const profileForm = document.getElementById('profile-form');
-        profileForm.addEventListener('submit', async (e) => {
+        // ฟังก์ชันเปิดฟอร์มโปรไฟล์ (ใช้ได้ทั้งตอนสมัครใหม่ และตอนกด Edit)
+        function openProfileForm(isEdit = false) {
+            viewAuth.classList.add('hidden');
+            viewMain.classList.add('hidden');
+            viewProfileSetup.classList.remove('hidden');
+
+            const cancelBtn = document.getElementById('cancel-profile-btn');
+            
+            if (isEdit && currentUserData) {
+                document.getElementById('profile-setup-title').innerText = "แก้ไขโปรไฟล์ของคุณ";
+                document.getElementById('setup-name').value = currentUserData.name || '';
+                document.getElementById('setup-age').value = currentUserData.age || '';
+                document.getElementById('setup-sport').value = currentUserData.sport || '';
+                document.getElementById('setup-bio').value = currentUserData.bio || '';
+                base64ImageString = currentUserData.avatar || '';
+
+                if (base64ImageString) {
+                    profilePreview.src = base64ImageString;
+                    profilePreview.classList.remove('hidden');
+                    profilePlaceholder.classList.add('hidden');
+                }
+                cancelBtn.classList.remove('hidden'); // โชว์ปุ่มยกเลิกเวลา Edit
+            } else {
+                document.getElementById('profile-setup-title').innerText = "ตั้งค่าโปรไฟล์ของคุณ";
+                document.getElementById('profile-form').reset();
+                base64ImageString = "";
+                profilePreview.classList.add('hidden');
+                profilePlaceholder.classList.remove('hidden');
+                cancelBtn.classList.add('hidden'); // ซ่อนปุ่มยกเลิกถ้าสมัครใหม่
+            }
+        }
+
+        // ปุ่มยกเลิกการแก้ไขโปรไฟล์
+        document.getElementById('cancel-profile-btn').addEventListener('click', () => {
+            viewProfileSetup.classList.add('hidden');
+            viewMain.classList.remove('hidden');
+        });
+
+        // ปุ่มกดเข้าไปแก้ไขโปรไฟล์ (Edit Profile)
+        document.getElementById('edit-profile-btn').addEventListener('click', () => {
+            openProfileForm(true);
+        });
+
+        // Handle Profile Form Submit (บันทึกโปรไฟล์)
+        document.getElementById('profile-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!auth.currentUser) return;
 
@@ -314,13 +414,14 @@ const firebaseConfig = {
                 age,
                 sport,
                 bio,
-                avatar: base64ImageString || "https://via.placeholder.com/150",
-                createdAt: serverTimestamp()
+                avatar: base64ImageString || "",
+                createdAt: currentUserData ? currentUserData.createdAt : serverTimestamp()
             };
 
             try {
                 await setDoc(doc(db, "users", auth.currentUser.uid), userData);
                 currentUserData = userData;
+                alert("บันทึกโปรไฟล์เรียบร้อยแล้ว!");
                 viewProfileSetup.classList.add('hidden');
                 viewMain.classList.remove('hidden');
                 loadUserDataAndFeed();
@@ -332,20 +433,24 @@ const firebaseConfig = {
         // Auth State Observer
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                const userDocRef = doc(db, "users", user.uid);
-                const userDoc = await getDoc(userDocRef);
+                try {
+                    const userDocRef = doc(db, "users", user.uid);
+                    const userDoc = await getDoc(userDocRef);
 
-                if (userDoc.exists()) {
-                    currentUserData = userDoc.data();
-                    viewAuth.classList.add('hidden');
-                    viewProfileSetup.classList.add('hidden');
-                    viewMain.classList.remove('hidden');
-                    loadUserDataAndFeed();
-                } else {
-                    viewAuth.classList.add('hidden');
-                    viewProfileSetup.classList.remove('hidden');
+                    if (userDoc.exists()) {
+                        currentUserData = userDoc.data();
+                        viewAuth.classList.add('hidden');
+                        viewProfileSetup.classList.add('hidden');
+                        viewMain.classList.remove('hidden');
+                        loadUserDataAndFeed();
+                    } else {
+                        openProfileForm(false); // ถ้าไม่มีข้อมูล ให้สร้างโปรไฟล์ใหม่
+                    }
+                } catch (err) {
+                    console.error(err);
                 }
             } else {
+                currentUserData = null;
                 viewAuth.classList.remove('hidden');
                 viewProfileSetup.classList.add('hidden');
                 viewMain.classList.add('hidden');
@@ -361,7 +466,19 @@ const firebaseConfig = {
         // Load Main Feed & User Bar
         function loadUserDataAndFeed() {
             if (!currentUserData) return;
-            document.getElementById('user-avatar').src = currentUserData.avatar;
+            
+            const userAvatarImg = document.getElementById('user-avatar');
+            const userAvatarFallback = document.getElementById('user-avatar-fallback');
+
+            if (currentUserData.avatar && currentUserData.avatar.trim() !== "") {
+                userAvatarImg.src = currentUserData.avatar;
+                userAvatarImg.classList.remove('hidden');
+                userAvatarFallback.classList.add('hidden');
+            } else {
+                userAvatarImg.classList.add('hidden');
+                userAvatarFallback.classList.remove('hidden');
+            }
+
             document.getElementById('user-display-name').innerText = currentUserData.name;
             document.getElementById('user-display-sport').innerText = `กีฬาโปรด: ${currentUserData.sport}`;
             loadPosts();
@@ -371,17 +488,25 @@ const firebaseConfig = {
         const postForm = document.getElementById('post-form');
         postForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const activeUser = auth.currentUser;
+            if (!activeUser) return;
+
             const sport = document.getElementById('post-sport').value;
             const location = document.getElementById('post-location').value;
+            const appointmentTime = document.getElementById('post-appointment-time').value;
             const content = document.getElementById('post-content').value;
+
+            const authorName = currentUserData ? currentUserData.name : activeUser.email.split('@')[0];
+            const authorAvatar = currentUserData ? currentUserData.avatar : "";
 
             try {
                 await addDoc(collection(db, "posts"), {
-                    uid: currentUserData.uid,
-                    authorName: currentUserData.name,
-                    authorAvatar: currentUserData.avatar,
+                    uid: activeUser.uid,
+                    authorName: authorName,
+                    authorAvatar: authorAvatar,
                     sport,
                     location,
+                    appointmentTime,
                     content,
                     createdAt: serverTimestamp()
                 });
@@ -403,72 +528,149 @@ const firebaseConfig = {
             const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
             onSnapshot(q, (snapshot) => {
                 postsContainer.innerHTML = "";
-                if (snapshot.empty) {
-                    postsContainer.innerHTML = `<p class="text-center text-gray-400 py-6 bg-white rounded-2xl shadow">ยังไม่มีโพสต์ชวนออกกำลังกาย มาสร้างโพสต์แรกกันเลย!</p>`;
-                    return;
-                }
+                let activePostsCount = 0;
+                const now = new Date();
 
                 snapshot.forEach((docSnap) => {
                     const post = docSnap.data();
                     const postId = docSnap.id;
 
-                    if (selectedFilter !== "all" && post.sport !== selectedFilter) {
-                        return;
+                    if (selectedFilter !== "all" && post.sport !== selectedFilter) return;
+
+                    // ฟิลเตอร์ซ่อนโพสต์หมดอายุ
+                    let displayTime = "";
+                    if (post.appointmentTime) {
+                        const aptTime = new Date(post.appointmentTime);
+                        if (aptTime < now) return; 
+                        
+                        const timeString = aptTime.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'});
+                        const dateString = aptTime.toLocaleDateString('th-TH', {day: 'numeric', month: 'short'});
+                        displayTime = `⏰ นัดเวลา: ${timeString} น. (${dateString})`;
                     }
+                    activePostsCount++;
+
+                    // Avatar logic
+                    let avatarHtml = post.authorAvatar && post.authorAvatar.trim() !== "" 
+                        ? `<img src="${post.authorAvatar}" class="w-10 h-10 rounded-full object-cover border-2 border-transparent hover:border-msuYellow transition">`
+                        : `<div class="w-10 h-10 rounded-full bg-gray-100 border-2 border-transparent hover:border-msuYellow transition flex items-center justify-center text-gray-400">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                           </div>`;
+
+                    const isMyPost = post.uid === auth.currentUser?.uid;
+                    const actionButtonHtml = isMyPost 
+                        ? `<span class="text-[11px] text-gray-400 font-medium bg-gray-100 px-3 py-1.5 rounded-xl border">👤 โพสต์ของคุณเอง</span>`
+                        : `<button onclick="openPrivateChat('${post.uid}', '${post.authorName}')" class="bg-msuDark text-white font-semibold text-xs px-4 py-2 rounded-xl hover:bg-gray-800 transition shadow">💬 แชทส่วนตัว 1-on-1</button>`;
 
                     const card = document.createElement('div');
-                    card.className = "bg-white rounded-2xl shadow p-4 border border-gray-100 space-y-3";
+                    card.className = "bg-white rounded-2xl shadow-sm p-4 border border-gray-200 space-y-3";
+                    
+                    // เพิ่มระบบส่องโปรไฟล์ตรงรูปภาพและชื่อ
                     card.innerHTML = `
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-3">
-                                <img src="${post.authorAvatar || 'https://via.placeholder.com/150'}" class="w-10 h-10 rounded-full object-cover border">
+                                <div onclick="viewUserProfile('${post.uid}')" class="cursor-pointer transform hover:scale-105 transition" title="ส่องโปรไฟล์">
+                                    ${avatarHtml}
+                                </div>
                                 <div>
-                                    <h4 class="font-bold text-gray-900 text-sm">${post.authorName}</h4>
-                                    <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-medium">${post.sport}</span>
+                                    <h4 onclick="viewUserProfile('${post.uid}')" class="font-bold text-gray-900 text-sm cursor-pointer hover:text-msuYellow transition inline-block">${post.authorName}</h4>
+                                    <br>
+                                    <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-medium mt-1 inline-block">${post.sport}</span>
                                 </div>
                             </div>
-                            <span class="text-xs font-semibold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-lg">📍 ${post.location}</span>
+                            <div class="flex flex-col items-end space-y-1">
+                                <span class="text-xs font-semibold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-lg">📍 ${post.location}</span>
+                                ${displayTime ? `<span class="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-lg border border-red-100">${displayTime}</span>` : ''}
+                            </div>
                         </div>
                         <p class="text-gray-700 text-sm mt-2">${post.content}</p>
-                        <div class="flex justify-end pt-2 border-t">
-                            <button onclick="openChatRoom('${postId}', '${post.authorName}')" class="bg-gray-900 text-white text-xs px-4 py-2 rounded-xl hover:bg-gray-800 transition shadow">
-                                พูดคุย / นัดหมาย
-                            </button>
+                        <div class="flex justify-end pt-3 border-t mt-3">
+                            ${actionButtonHtml}
                         </div>
                     `;
                     postsContainer.appendChild(card);
                 });
+
+                if (activePostsCount === 0) {
+                    postsContainer.innerHTML = `<p class="text-center text-gray-400 py-6 bg-white rounded-2xl shadow-sm border border-gray-100">ยังไม่มีโพสต์ที่ถึงเวลานัดหมาย มาเริ่มสร้างนัดแรกกันเลย!</p>`;
+                }
             });
         }
 
-        // Global function to open chat room
-        window.openChatRoom = async function(postId, postAuthorName) {
-            currentActiveChatId = postId;
-            viewMain.classList.add('hidden');
-            viewChat.classList.remove('hidden');
-            document.getElementById('chat-room-title').innerText = `ห้องแชท: ${postAuthorName}`;
-            loadMessages(postId);
+        // 🔍 ระบบส่องโปรไฟล์คนอื่น (View User Profile)
+        window.viewUserProfile = async function(userId) {
+            try {
+                const userDoc = await getDoc(doc(db, "users", userId));
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    
+                    const modalAvatarImg = document.getElementById('modal-avatar');
+                    const modalAvatarFallback = document.getElementById('modal-avatar-fallback');
+                    
+                    if (data.avatar && data.avatar.trim() !== "") {
+                        modalAvatarImg.src = data.avatar;
+                        modalAvatarImg.classList.remove('hidden');
+                        modalAvatarFallback.classList.add('hidden');
+                    } else {
+                        modalAvatarImg.classList.add('hidden');
+                        modalAvatarFallback.classList.remove('hidden');
+                    }
+
+                    document.getElementById('modal-name').innerText = data.name;
+                    document.getElementById('modal-age').innerText = `อายุ: ${data.age} ปี`;
+                    document.getElementById('modal-sport').innerText = `🏆 ${data.sport}`;
+                    document.getElementById('modal-bio').innerText = data.bio || '- ยังไม่มีข้อมูลแนะนำตัว -';
+                    
+                    document.getElementById('profile-modal').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error("ดึงข้อมูลโปรไฟล์ไม่สำเร็จ", error);
+            }
         };
 
+        // ปิดหน้าต่างส่องโปรไฟล์
+        document.getElementById('close-profile-modal').addEventListener('click', () => {
+            document.getElementById('profile-modal').classList.add('hidden');
+        });
+
+        // ระบบสร้างห้องแชทส่วนตัว (Private Direct Message)
+        window.openPrivateChat = async function(targetUserId, targetUserName) {
+            const myUid = auth.currentUser.uid;
+            if (myUid === targetUserId) return; 
+
+            const chatParticipants = [myUid, targetUserId].sort();
+            currentActiveChatId = `${chatParticipants[0]}_${chatParticipants[1]}`;
+
+            viewMain.classList.add('hidden');
+            viewChat.classList.remove('hidden');
+            document.getElementById('chat-room-title').innerText = `แชทส่วนตัวกับ: ${targetUserName}`;
+            
+            loadMessages(currentActiveChatId);
+        };
+
+        // ปิดห้องแชทกลับไปหน้าฟีด
         document.getElementById('back-to-feed-btn').addEventListener('click', () => {
             viewChat.classList.add('hidden');
             viewMain.classList.remove('hidden');
             currentActiveChatId = null;
         });
 
-        // Chat Message Sending
+        // การส่งข้อความ 
         const chatForm = document.getElementById('chat-form');
         chatForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const textInput = document.getElementById('chat-input');
             const text = textInput.value.trim();
-            if (!text || !currentActiveChatId) return;
+            const activeUser = auth.currentUser;
+            if (!text || !currentActiveChatId || !activeUser) return;
+
+            const senderName = currentUserData ? currentUserData.name : (activeUser.displayName || "ผู้ใช้งาน");
 
             try {
-                await addDoc(collection(db, "posts", currentActiveChatId, "messages"), {
-                    senderId: currentUserData.uid,
-                    senderName: currentUserData.name,
+                await addDoc(collection(db, "chats", currentActiveChatId, "messages"), {
+                    senderId: activeUser.uid,
+                    senderName: senderName,
                     text,
+                    isRead: false,
                     createdAt: serverTimestamp()
                 });
                 textInput.value = "";
@@ -477,36 +679,52 @@ const firebaseConfig = {
             }
         });
 
-        // Load Real-time Messages
-        function loadMessages(postId) {
+        // โหลดข้อความแบบเรียลไทม์ & ระบบเช็กอ่านแล้ว (Read Receipts)
+        function loadMessages(chatId) {
             const chatMessagesContainer = document.getElementById('chat-messages');
-            const q = query(collection(db, "posts", postId, "messages"), orderBy("createdAt", "asc"));
+            const q = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt", "asc"));
 
             onSnapshot(q, (snapshot) => {
                 chatMessagesContainer.innerHTML = "";
                 if (snapshot.empty) {
-                    chatMessagesContainer.innerHTML = `<p class="text-center text-gray-400 py-4 text-sm">ยังไม่มีข้อความ เริ่มทักทายพูดคุยกันได้เลย</p>`;
+                    chatMessagesContainer.innerHTML = `<p class="text-center text-gray-400 py-4 text-sm mt-10">เริ่มส่งข้อความเพื่อทักทายพูดคุยกันได้เลย!</p>`;
                     return;
                 }
 
                 snapshot.forEach((docSnap) => {
                     const msg = docSnap.data();
-                    const isMe = msg.senderId === currentUserData.uid;
+                    const msgId = docSnap.id;
+                    const isMe = msg.senderId === auth.currentUser?.uid;
+
+                    // Read Receipt Logic
+                    if (!isMe && msg.isRead === false) {
+                        const msgRef = doc(db, "chats", chatId, "messages", msgId);
+                        updateDoc(msgRef, { isRead: true }).catch(console.error);
+                    }
+
+                    let readReceiptHtml = '';
+                    if (isMe) {
+                        if (msg.isRead) {
+                            readReceiptHtml = `<span class="text-[10px] text-blue-500 mt-0.5 ml-1 font-medium">✓✓ อ่านแล้ว</span>`;
+                        } else {
+                            readReceiptHtml = `<span class="text-[10px] text-gray-400 mt-0.5 ml-1">✓ ส่งแล้ว</span>`;
+                        }
+                    }
 
                     const msgDiv = document.createElement('div');
-                    msgDiv.className = `flex flex-col ${isMe ? 'items-end' : 'items-start'}`;
+                    msgDiv.className = `flex flex-col mb-3 ${isMe ? 'items-end' : 'items-start'}`;
                     msgDiv.innerHTML = `
-                        <span class="text-[10px] text-gray-400 mb-1">${msg.senderName}</span>
-                        <div class="max-w-[75%] px-4 py-2 rounded-2xl text-sm ${isMe ? 'bg-msuYellow text-msuDark rounded-br-none' : 'bg-gray-200 text-gray-800 rounded-bl-none'}">
+                        <div class="max-w-[75%] px-4 py-2 rounded-2xl text-sm ${isMe ? 'bg-msuYellow text-msuDark rounded-br-none' : 'bg-white border border-gray-200 text-gray-800 rounded-bl-none shadow-sm'}">
                             ${msg.text}
                         </div>
+                        ${readReceiptHtml}
                     `;
                     chatMessagesContainer.appendChild(msgDiv);
                 });
+                
                 chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
             });
         }
     </script>
 </body>
 </html>
-
